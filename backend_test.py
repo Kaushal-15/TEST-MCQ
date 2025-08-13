@@ -319,7 +319,7 @@ class KonguMCQAPITester:
         )
 
     def test_submit_test(self):
-        """Test test submission (student only)"""
+        """Test test submission with UNIT-WISE PERFORMANCE (ENHANCED FEATURE)"""
         if not self.student_token or not self.created_resources['test_id']:
             print("❌ No student token or test ID available for test submission")
             return False
@@ -334,13 +334,117 @@ class KonguMCQAPITester:
             "completion_time": datetime.utcnow().isoformat()
         }
         
-        return self.run_test(
-            "Submit Test", 
+        success, response = self.run_test(
+            "Submit Test (with Unit Performance)", 
             "POST", 
             "api/test/submit", 
             200,
             submission_data,
             self.student_token
+        )
+        
+        if success and 'attempt_id' in response:
+            self.created_resources['attempt_id'] = response['attempt_id']
+            print(f"   Attempt ID: {response['attempt_id']}")
+        
+        return success
+
+    def test_get_staff_questions(self):
+        """Test getting staff questions (NEW FEATURE)"""
+        if not self.staff_token:
+            print("❌ No staff token available for getting staff questions")
+            return False
+            
+        return self.run_test(
+            "Get Staff Questions", 
+            "GET", 
+            "api/staff/questions", 
+            200,
+            token=self.staff_token
+        )
+
+    def test_get_staff_tests(self):
+        """Test getting staff tests (NEW FEATURE)"""
+        if not self.staff_token:
+            print("❌ No staff token available for getting staff tests")
+            return False
+            
+        return self.run_test(
+            "Get Staff Tests", 
+            "GET", 
+            "api/staff/tests", 
+            200,
+            token=self.staff_token
+        )
+
+    def test_live_status(self):
+        """Test live test status monitoring (NEW FEATURE)"""
+        if not self.staff_token or not self.created_resources['test_id']:
+            print("❌ No staff token or test ID available for live status")
+            return False
+            
+        return self.run_test(
+            "Get Live Test Status", 
+            "GET", 
+            f"api/staff/live-status/{self.created_resources['test_id']}", 
+            200,
+            token=self.staff_token
+        )
+
+    def test_test_insights(self):
+        """Test test insights/analytics (NEW FEATURE)"""
+        if not self.staff_token or not self.created_resources['test_id']:
+            print("❌ No staff token or test ID available for test insights")
+            return False
+            
+        return self.run_test(
+            "Get Test Insights", 
+            "GET", 
+            f"api/staff/test-insights/{self.created_resources['test_id']}", 
+            200,
+            token=self.staff_token
+        )
+
+    def test_student_test_insights(self):
+        """Test student test insights (NEW FEATURE)"""
+        if not self.student_token or not self.created_resources['attempt_id']:
+            print("❌ No student token or attempt ID available for student insights")
+            return False
+            
+        return self.run_test(
+            "Get Student Test Insights", 
+            "GET", 
+            f"api/student/test-insights/{self.created_resources['attempt_id']}", 
+            200,
+            token=self.student_token
+        )
+
+    def test_test_results(self):
+        """Test detailed test results (NEW FEATURE)"""
+        if not self.student_token or not self.created_resources['attempt_id']:
+            print("❌ No student token or attempt ID available for test results")
+            return False
+            
+        return self.run_test(
+            "Get Test Results", 
+            "GET", 
+            f"api/student/results/{self.created_resources['attempt_id']}", 
+            200,
+            token=self.student_token
+        )
+
+    def test_staff_test_results(self):
+        """Test staff view of test results (NEW FEATURE)"""
+        if not self.staff_token or not self.created_resources['test_id']:
+            print("❌ No staff token or test ID available for staff test results")
+            return False
+            
+        return self.run_test(
+            "Get Staff Test Results", 
+            "GET", 
+            f"api/staff/test-results/{self.created_resources['test_id']}", 
+            200,
+            token=self.staff_token
         )
 
     def run_all_tests(self):
