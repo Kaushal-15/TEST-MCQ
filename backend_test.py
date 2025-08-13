@@ -257,7 +257,7 @@ class KonguMCQAPITester:
         return success
 
     def test_create_test(self):
-        """Test test creation (staff only)"""
+        """Test test creation with DATE/TIME and TARGET YEAR/SEMESTER (ENHANCED FEATURE)"""
         if not self.staff_token or not self.created_resources['subject_id']:
             print("❌ No staff token or subject ID available for test creation")
             return False
@@ -268,13 +268,15 @@ class KonguMCQAPITester:
         test_data = {
             "subject_id": self.created_resources['subject_id'],
             "category": "CAT",
-            "start_time": start_time.isoformat(),
-            "end_time": end_time.isoformat(),
-            "duration_minutes": 45
+            "start_date": start_time.isoformat(),  # NEW: Enhanced date/time fields
+            "end_date": end_time.isoformat(),
+            "duration_minutes": 45,
+            "target_year": 2,  # NEW: Target year for filtering
+            "target_semester": 3  # NEW: Target semester for filtering
         }
         
         success, response = self.run_test(
-            "Create Test", 
+            "Create Test (Enhanced with Date/Time & Targeting)", 
             "POST", 
             "api/staff/tests", 
             200, 
