@@ -227,7 +227,7 @@ class KonguMCQAPITester:
         return self.run_test("Get Subjects", "GET", "api/subjects", 200)
 
     def test_create_question(self):
-        """Test question creation (staff only)"""
+        """Test question creation with UNITS (ENHANCED FEATURE)"""
         if not self.staff_token or not self.created_resources['subject_id']:
             print("❌ No staff token or subject ID available for question creation")
             return False
@@ -237,17 +237,24 @@ class KonguMCQAPITester:
             "options": ["O(n)", "O(log n)", "O(n²)", "O(1)"],
             "correct_answer": 1,
             "explanation": "Binary search divides the search space in half each time, resulting in O(log n) complexity.",
-            "subject_id": self.created_resources['subject_id']
+            "subject_id": self.created_resources['subject_id'],
+            "units": ["Unit 1", "Unit 2"]  # NEW: Units field for question classification
         }
         
-        return self.run_test(
-            "Create Question", 
+        success, response = self.run_test(
+            "Create Question (with Units)", 
             "POST", 
             "api/staff/questions", 
             200, 
             question_data,
             self.staff_token
         )
+        
+        if success and 'question_id' in response:
+            self.created_resources['question_id'] = response['question_id']
+            print(f"   Question ID: {response['question_id']}")
+        
+        return success
 
     def test_create_test(self):
         """Test test creation (staff only)"""
