@@ -66,18 +66,18 @@ class KonguMCQAPITester:
         """Test API health endpoint"""
         return self.run_test("Health Check", "GET", "api/health", 200)
 
-    def test_get_departments(self):
-        """Test departments endpoint"""
-        success, response = self.run_test("Get Departments", "GET", "api/departments", 200)
-        if success and 'departments' in response:
-            departments = response['departments']
-            print(f"   Found {len(departments)} departments")
-            expected_depts = ["Civil Engineering", "Computer Engineering", "Mechanical Engineering"]
-            for dept in expected_depts:
-                if dept in departments:
-                    print(f"   ✓ {dept} found")
+    def test_get_units(self):
+        """Test units endpoint (NEW FEATURE)"""
+        success, response = self.run_test("Get Units", "GET", "api/units", 200)
+        if success and 'units' in response:
+            units = response['units']
+            print(f"   Found {len(units)} units")
+            expected_units = ["Unit 1", "Unit 2", "Unit 3", "Unit 4", "Unit 5"]
+            for unit in expected_units:
+                if unit in units:
+                    print(f"   ✓ {unit} found")
                 else:
-                    print(f"   ✗ {dept} missing")
+                    print(f"   ✗ {unit} missing")
         return success
 
     def test_student_registration(self):
