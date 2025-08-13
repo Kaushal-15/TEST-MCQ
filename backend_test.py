@@ -95,7 +95,7 @@ class KonguMCQAPITester:
         return success
 
     def test_student_registration(self):
-        """Test student registration"""
+        """Test student registration with EMAIL (ENHANCED FEATURE)"""
         timestamp = datetime.now().strftime("%H%M%S")
         student_data = {
             "name": f"Test Student {timestamp}",
@@ -104,11 +104,12 @@ class KonguMCQAPITester:
             "department": "Computer Engineering",
             "year": 2,
             "semester": 3,
+            "email": f"student{timestamp}@kongu.edu",  # NEW: Email field required
             "password": "TestPass123!"
         }
         
         success, response = self.run_test(
-            "Student Registration", 
+            "Student Registration (with Email)", 
             "POST", 
             "api/student/register", 
             200, 
