@@ -449,14 +449,16 @@ class KonguMCQAPITester:
 
     def run_all_tests(self):
         """Run all API tests in sequence"""
-        print("🚀 Starting Kongu MCQ Platform API Tests")
-        print("=" * 50)
+        print("🚀 Starting Enhanced Kongu MCQ Platform API Tests")
+        print("🔥 Testing NEW FEATURES: Email Integration, Units System, Enhanced Analytics")
+        print("=" * 70)
         
         # Basic connectivity tests
         self.test_health_check()
         self.test_get_departments()
+        self.test_get_units()  # NEW: Test units endpoint
         
-        # Registration tests
+        # Enhanced registration tests (with email)
         self.test_student_registration()
         self.test_staff_registration()
         
@@ -464,23 +466,33 @@ class KonguMCQAPITester:
         self.test_student_login()
         self.test_staff_login()
         
-        # Staff functionality tests
+        # Enhanced staff functionality tests
         self.test_create_subject()
         self.test_get_subjects()
-        self.test_create_question()
-        self.test_create_test()
+        self.test_create_question()  # Enhanced with units
+        self.test_get_staff_questions()  # NEW
+        self.test_create_test()  # Enhanced with date/time and targeting
+        self.test_get_staff_tests()  # NEW
         
-        # Student functionality tests
-        self.test_get_available_tests()
+        # Enhanced student functionality tests
+        self.test_get_available_tests()  # Now filtered by department/year
         self.test_get_test_questions()
-        self.test_submit_test()
+        self.test_submit_test()  # Enhanced with unit performance
+        
+        # NEW: Analytics and insights tests
+        self.test_live_status()
+        self.test_test_insights()
+        self.test_student_test_insights()
+        self.test_test_results()
+        self.test_staff_test_results()
         
         # Print final results
-        print("\n" + "=" * 50)
+        print("\n" + "=" * 70)
         print(f"📊 Test Results: {self.tests_passed}/{self.tests_run} tests passed")
         
         if self.tests_passed == self.tests_run:
-            print("🎉 All tests passed! Backend API is working correctly.")
+            print("🎉 All tests passed! Enhanced Backend API is working correctly.")
+            print("✅ Email integration, Units system, and Analytics features are functional!")
             return 0
         else:
             print(f"⚠️  {self.tests_run - self.tests_passed} tests failed. Check the issues above.")
