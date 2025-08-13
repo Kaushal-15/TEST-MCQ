@@ -15,7 +15,9 @@ class KonguMCQAPITester:
             'student_id': None,
             'staff_id': None,
             'subject_id': None,
-            'test_id': None
+            'test_id': None,
+            'question_id': None,
+            'attempt_id': None
         }
 
     def run_test(self, name, method, endpoint, expected_status, data=None, token=None):
